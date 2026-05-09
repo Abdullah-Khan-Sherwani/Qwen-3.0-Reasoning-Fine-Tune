@@ -1,4 +1,47 @@
+# Secrets
 .env
+
+# LoRA adapter weights (large binary files)
 adapters_datasetA/
 adapters_datasetB/
+
+# Python
 __pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Virtual environments
+.venv/
+venv/
+env/
+.conda/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Unsloth compiled cache (auto-generated, not needed in version control)
+unsloth_compiled_cache/
+
+# HuggingFace model cache (large, auto-downloaded)
+.cache/
+hub/
+
+# Temporary / editor
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
