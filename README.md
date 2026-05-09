@@ -38,6 +38,22 @@ Each notebook installs its own Python dependencies in the first cell — you do 
 
 ---
 
+## Environment variables
+
+The notebooks call the HuggingFace Inference API to run the Mistral-7B judge. You need a free HF token with Inference API access.
+
+**Create `notebooks/.env`** (the notebooks load it automatically):
+
+```
+HF_TOKEN=hf_your_token_here
+```
+
+Get your token at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) — a read-only token is sufficient. Make sure `.env` is in the same `notebooks/` folder as the notebooks, not the project root.
+
+> `.env` is listed in `.gitignore` — do not commit it.
+
+---
+
 ## Notebook order — run them in sequence
 
 ### `00_baseline.ipynb` — Baseline evaluation
