@@ -1,147 +1,148 @@
-# NLP Assignment 04 — Run Guide
+# Qwen3 Reasoning Fine-Tune — LoRA Ablation Study
 
-**IBA | Track 2, Option D | Ablation Study with Qwen3 + LoRA SFT**
+**IBA · NLP with Deep Learning · Assignment 04 · Track 2, Option D**
+
+Fine-tunes `Qwen/Qwen3-0.6B` on two distinct reasoning datasets via LoRA SFT (5 ablation trials each), then evaluates the resulting adapters against a baseline using `Kimi-K2-Instruct` as an LLM judge.
 
 ---
 
-## What this project does
+## Overview
 
-Fine-tunes `Qwen3-0.6B` on two different reasoning datasets using LoRA (5 trials each),
-evaluates against a baseline, then compares using `Kimi-K2-Instruct` as an LLM judge.
+| Stage | What happens |
+|-------|-------------|
+| **Baseline** | `Qwen3-0.6B` and `Qwen3-1.7B` run on 10 fixed reasoning prompts with no training; scored by Kimi judge |
+| **SFT — Dataset A** | 5 LoRA trials on `Crownelius/Opus-4.6-Reasoning-3300x` (general reasoning + CoT traces) |
+| **SFT — Dataset B** | Same 5 trial configs on `nvidia/Nemotron-SFT-Math-v3` (math-focused CoT) |
+| **Evaluation** | 3-way comparison (base vs sft_A vs sft_B), cross-domain transfer, difficulty stratification |
+
+The ablation varies two axes across the 5 trials:
+
+| Trial | Data used | LoRA rank | Target modules | Purpose |
+|-------|-----------|-----------|----------------|---------|
+| T1 | 25 % | 16 | q, k, v, o | Data efficiency — low |
+| T2 | 50 % | 16 | q, k, v, o | Data efficiency — mid |
+| T3 | 100 % | 16 | q, k, v, o | Data efficiency — full |
+| T4 | 100 % | 32 | q, k, v, o, gate, up, down | LoRA capacity — wider |
+| T5 | 100 % | 64 | q, k, v, o | LoRA capacity — deeper |
 
 ---
 
 ## Requirements
 
-### Your machine needs:
-- CUDA GPU (tested on RTX 3090 — 24 GB VRAM is plenty)
+- CUDA GPU · tested on RTX 3090 (24 GB VRAM)
 - Python 3.10+
-- PyTorch with CUDA support
-
-### One-time environment setup (do this before opening any notebook):
 
 ```bash
-# Install PyTorch with CUDA 12.4
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+# PyTorch with CUDA 12.4
+pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 \
+    --index-url https://download.pytorch.org/whl/cu124
 
-# Install Jupyter so you can run the notebooks
 pip install jupyter
 ```
 
-Then open Jupyter:
-```bash
-cd /path/to/NLP_Project_2/notebooks
-jupyter notebook
-```
-
-Each notebook installs its own Python dependencies in the first cell — you do not need to pre-install them.
+Each notebook installs its own remaining dependencies (Unsloth, TRL, PEFT, Transformers, Datasets, etc.) in its first cell — no additional pre-installation needed.
 
 ---
 
-## Environment variables
+## Environment setup
 
-The notebooks call the Hugging Face OpenAI-compatible router to run the Kimi-K2 judge. You need an HF token with access to the configured inference provider.
+The notebooks call the Hugging Face OpenAI-compatible router to run the Kimi-K2 judge. Create `.env` in the project root before running anything:
 
-**Create `.env` in this project folder** (the notebooks load it automatically):
-
-```
+```bash
 HF_TOKEN=your_huggingface_token_here
 ```
 
-Get your token at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) — a read-only token is sufficient. Make sure `.env` is in the same folder as the notebooks.
-
-> `.env` is listed in `.gitignore` — do not commit it.
+Get a token at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) — read-only scope is sufficient.
 
 ---
 
-## Notebook order — run them in sequence
+## Notebooks — run in order
 
-### `00_baseline.ipynb` — Baseline evaluation
-- Runs `Qwen3-0.6B` and `Qwen3-1.7B` locally on 10 reasoning prompts (no training)
-- Scores responses with Kimi-K2 judge via the Hugging Face OpenAI-compatible router
-- **Output files (needed by notebooks 01–03):**
-  - `baseline_results.csv`
-  - `prompts.json`
-  - `gold_answers.json`
-- **Approx time:** 20–40 min depending on GPU (runs two ~1–3 GB models sequentially)
+### `00_baseline.ipynb` · Baseline evaluation
+Loads `Qwen3-0.6B` and `Qwen3-1.7B` locally (no training), runs both on 10 prompts, scores with Kimi judge.
 
----
+**Produces** (required by all later notebooks):
+- `baseline_results.csv`
+- `prompts.json`
+- `gold_answers.json`
 
-### `01_sft_datasetA.ipynb` — SFT on Crownelius reasoning dataset
-- Fine-tunes `Qwen3-0.6B` using LoRA in 5 ablation trials
-- Dataset: `Crownelius/Opus-4.6-Reasoning-3300x` (~2,160 rows, general reasoning with CoT traces)
-- After each trial: saves adapter, evaluates on 10 prompts, scores with judge
-- **Output files:**
-  - `trial_results_datasetA.csv`
-  - `all_scores_datasetA.csv`
-  - `best_trial_datasetA.json`
-  - `adapters_datasetA/T1` through `adapters_datasetA/T5` (LoRA weights)
-- **Approx time:** 3–6 hours total (5 trials × 30–60 min each on 3090)
+*Runtime: ~20–40 min*
 
 ---
 
-### `02_sft_datasetB.ipynb` — SFT on Nvidia Nemotron math dataset
-- Same model, same 5 trial configs as notebook 01 — **only the dataset differs**
-- Dataset: `nvidia/Nemotron-SFT-Math-v3` (~2,160-row CoT-only subset)
-- **Output files:**
-  - `trial_results_datasetB.csv`
-  - `all_scores_datasetB.csv`
-  - `best_trial_datasetB.json`
-  - `adapters_datasetB/T1` through `adapters_datasetB/T5` (LoRA weights)
-- **Approx time:** 3–6 hours total
+### `01_sft_datasetA.ipynb` · SFT on general reasoning
+Runs 5 LoRA trials on `Crownelius/Opus-4.6-Reasoning-3300x` (2,160 rows with `problem`, `thinking`, `solution` fields). The `thinking` field is wrapped in `<think>` tags inside the assistant turn, giving the model explicit chain-of-thought supervision.
+
+**Produces:**
+- `trial_results_datasetA.csv`, `all_scores_datasetA.csv`, `best_trial_datasetA.json`
+- `adapters_datasetA/T1` – `adapters_datasetA/T5` *(gitignored)*
+
+*Runtime: ~3–6 hours (5 trials)*
 
 ---
 
-### `03_evaluation.ipynb` — Final comparison and report tables
-- Loads the best adapter from each dataset (auto-detected from the JSON files above)
-- Runs 3-way comparison: `base` vs `sft_A` vs `sft_B` on all 10 prompts
-- Cross-domain eval: general-trained model on math prompts, math-trained on general
-- Difficulty-stratified eval on Dataset A problems (easy / medium / hard)
-- Prints all 5 report tables ready to paste into the assignment write-up
-- **Output files:**
-  - `comparison_3way.csv`
-  - `cross_domain_eval.csv`
-  - `difficulty_eval.csv`
-- **Approx time:** 1–2 hours
+### `02_sft_datasetB.ipynb` · SFT on math reasoning
+Identical trial configs to notebook 01. Only the dataset changes: `nvidia/Nemotron-SFT-Math-v3` (math-only CoT subset, same 2,160-row slice). No `thinking` field — solution-only supervision.
+
+**Produces:**
+- `trial_results_datasetB.csv`, `all_scores_datasetB.csv`, `best_trial_datasetB.json`
+- `adapters_datasetB/T1` – `adapters_datasetB/T5` *(gitignored)*
+
+*Runtime: ~3–6 hours (5 trials)*
 
 ---
 
-## VRAM notes (RTX 3090 — 24 GB)
+### `03_evaluation.ipynb` · Final report
+Auto-detects the best adapter from each dataset via the JSON files above, then produces three analyses:
 
-| Notebook | Peak VRAM usage |
-|----------|----------------|
-| 00 | ~4 GB (1.7B model, fp16) |
-| 01 / 02 | ~6–8 GB (0.6B model, 4-bit + LoRA training) |
+1. **3-way comparison** — base vs sft_A vs sft_B on all 10 prompts
+2. **Cross-domain transfer** — general-trained model on math prompts, math-trained on general prompts
+3. **Difficulty stratification** — Dataset A scores broken down by easy / medium / hard
+
+**Produces:** `comparison_3way.csv`, `cross_domain_eval.csv`, `difficulty_eval.csv`
+
+*Runtime: ~1–2 hours*
+
+---
+
+## Evaluation design
+
+| Component | Detail |
+|-----------|--------|
+| Prompts | 10 fixed: 5 general logic (G1–G5) + 5 math word problems (M1–M5) |
+| Gold answers | Generated via ChatGPT; stored in `gold_answers.json` |
+| Judge model | `moonshotai/Kimi-K2-Instruct:novita` via HF router |
+| Scoring scale | 1 = wrong, no reasoning · 3 = partial · 5 = correct, clear step-by-step |
+
+---
+
+## VRAM reference (RTX 3090 · 24 GB)
+
+| Notebook | Peak VRAM |
+|----------|-----------|
+| 00 | ~4 GB (1.7B, fp16) |
+| 01 / 02 | ~6–8 GB (0.6B, 4-bit + LoRA) |
 | 03 | ~6 GB (0.6B adapters, 4-bit inference) |
 
-If you run out of VRAM between trials, restart the notebook kernel before the next one.
+If you hit OOM mid-trial, restart the kernel — the next trial reloads from the base checkpoint.
 
 ---
 
-## If something breaks
+## Troubleshooting
 
-- **`CUDA out of memory`** — restart kernel, run the failing cell again. The models are unloaded between trials.
-- **`unsloth install fails`** — the install cell tries the CUDA-specific wheel first, then falls back to generic unsloth. If both fail: `pip install unsloth` manually in terminal.
-- **HF router/provider rate limits** (judge calls) — there is a short `time.sleep(...)` between judge calls. If you still hit rate limits, increase the delay in the `judge_response` calls.
-- **`FileNotFoundError: prompts.json`** — make sure your Jupyter working directory is `notebooks/`. Run `pwd` in a notebook cell to check; it should end in `.../notebooks`.
-- **Adapter not found in notebook 03** — notebooks 01 and 02 must complete fully before running 03. Check that `best_trial_datasetA.json` and `best_trial_datasetB.json` exist in the `notebooks/` folder.
+| Error | Fix |
+|-------|-----|
+| `CUDA out of memory` | Restart kernel; models are unloaded between trials |
+| `unsloth install fails` | The install cell falls back automatically; if both fail run `pip install unsloth` manually |
+| HF router rate limits | Increase the `time.sleep(...)` delay between judge calls in `judge_response` |
+| `FileNotFoundError: prompts.json` | Run notebook 00 first; Jupyter working directory must be the project root |
+| Adapter not found in notebook 03 | Notebooks 01 and 02 must complete fully; check that `best_trial_datasetA.json` and `best_trial_datasetB.json` exist |
 
 ---
 
-## Quick sanity check before starting
+## Baseline results (reference)
 
-Run this in a new notebook cell to confirm everything is ready:
-
-```python
-import torch
-print("CUDA available:", torch.cuda.is_available())
-print("GPU:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "none")
-print("VRAM:", f"{torch.cuda.get_device_properties(0).total_memory/1e9:.1f} GB" if torch.cuda.is_available() else "n/a")
-```
-
-Expected output on 3090:
-```
-CUDA available: True
-GPU: NVIDIA GeForce RTX 3090
-VRAM: 24.0 GB
-```
+| Model | Avg judge score (/ 5) |
+|-------|-----------------------|
+| Qwen3-0.6B (base) | 4.2 |
+| Qwen3-1.7B (base) | 4.8 |
