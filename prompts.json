@@ -48,5 +48,105 @@
     "id": "M5",
     "type": "math",
     "prompt": "A sequence starts: 2, 6, 18, 54, ... What is the 8th term? Identify the pattern and show your working."
+  },
+  {
+    "id": "D1",
+    "type": "difficult",
+    "prompt": "On an island, knights always tell the truth and knaves always lie. You meet two inhabitants A and B. A says: 'At least one of us is a knave.' Is A a knight or a knave? What about B? Reason step by step."
+  },
+  {
+    "id": "D2",
+    "type": "difficult",
+    "prompt": "You are on a game show. There are 3 doors: behind one is a car, behind the other two are goats. You pick door 1. The host, who knows what is behind each door, opens door 3 to reveal a goat. He offers you the chance to switch to door 2. Should you switch? What is the probability of winning if you switch versus if you stay? Reason carefully."
+  },
+  {
+    "id": "D3",
+    "type": "difficult",
+    "prompt": "How many times do the hour hand and minute hand of a clock overlap (point in exactly the same direction) in a 24-hour period? Derive the answer mathematically rather than counting."
+  },
+  {
+    "id": "D4",
+    "type": "difficult",
+    "prompt": "A rubber ball is dropped from a height of 100 metres. Each time it bounces, it rises to two-thirds of the height from which it just fell. What is the total distance (up and down combined) the ball travels before coming to rest? Show all working and simplify your answer."
+  },
+  {
+    "id": "D5",
+    "type": "difficult",
+    "prompt": "A disease affects 1% of the population. A diagnostic test is 99% accurate: if you have the disease the test is positive 99% of the time; if you do not have the disease the test is negative 99% of the time. You test positive. What is the probability you actually have the disease? Show all working using Bayes' theorem."
+  },
+  {
+    "id": "D6",
+    "type": "difficult",
+    "prompt": "You flip a fair coin repeatedly until you get heads. You win $2^n where n is the number of flips required. What is the expected value of your winnings? Analyse the result and explain why it is surprising (this is the St. Petersburg Paradox)."
+  },
+  {
+    "id": "D7",
+    "type": "difficult",
+    "prompt": "In how many ways can 8 people be seated around a circular table? Now suppose two specific people, Alice and Bob, must NOT sit next to each other. How many valid arrangements remain? Show all working."
+  },
+  {
+    "id": "D8",
+    "type": "difficult",
+    "prompt": "A snail is at the bottom of a 10-metre well. Each day it climbs 3 metres, but each night it slides back 2 metres. How many days does it take to reach the top? Now generalise: for a well of height h metres, daily climb c metres, nightly slide s metres (with c > s and c > h impossible after partial days), derive a formula for the number of days."
+  },
+  {
+    "id": "D9",
+    "type": "difficult",
+    "prompt": "Alice and Bob take turns rolling a fair six-sided die. Alice goes first. The first person to roll a 6 wins. What is the probability that Alice wins? Express your answer as a simplified fraction and show all working."
+  },
+  {
+    "id": "D10",
+    "type": "difficult",
+    "prompt": "Prove that the square root of 2 is irrational using proof by contradiction. Then state whether the square root of any non-perfect-square positive integer is always irrational, and justify your answer."
+  },
+  {
+    "id": "C1",
+    "type": "coding",
+    "prompt": "Write a Python function is_prime(n) that returns True if n is prime and False otherwise. It must handle all non-negative integers correctly. Explain your approach and state its time complexity."
+  },
+  {
+    "id": "C2",
+    "type": "coding",
+    "prompt": "Write a Python function fib(n) that returns the nth Fibonacci number (fib(0)=0, fib(1)=1). Implement it using memoization. Explain how memoization improves the time complexity compared to naive recursion, and state the complexity of both approaches."
+  },
+  {
+    "id": "C3",
+    "type": "coding",
+    "prompt": "Write a Python function two_sum(nums, target) that takes a list of integers and a target, and returns the indices [i, j] of the two numbers that add up to the target. Assume exactly one solution exists and you cannot use the same element twice. Achieve O(n) time complexity and explain how."
+  },
+  {
+    "id": "C4",
+    "type": "coding",
+    "prompt": "Write a Python function binary_search(arr, target) that searches for target in a sorted list. Return the index if found, or -1 if not found. Do not use any built-in search functions. Explain why binary search achieves O(log n) time complexity."
+  },
+  {
+    "id": "C5",
+    "type": "coding",
+    "prompt": "Write a Python function is_balanced(s) that takes a string containing only the characters ( ) { } [ ] and returns True if all brackets are correctly nested and matched, False otherwise. Explain your approach and its time complexity."
+  },
+  {
+    "id": "C6",
+    "type": "coding",
+    "prompt": "Define a Python class ListNode for a singly linked list node (with val and next attributes). Then write a function reverse_linked_list(head) that reverses the list in-place and returns the new head. Walk through an example with the list 1 \u2192 2 \u2192 3 \u2192 4 to verify your solution."
+  },
+  {
+    "id": "C7",
+    "type": "coding",
+    "prompt": "Write a Python function permutations(lst) that returns a list of all permutations of the input list of unique integers. Do not use itertools. Explain the recursive approach and state its time complexity."
+  },
+  {
+    "id": "C8",
+    "type": "coding",
+    "prompt": "Write a Python function merge_sorted(a, b) that takes two sorted lists of integers and returns a new sorted list containing all elements from both. Do not use sort() or sorted(). Achieve O(m+n) time complexity and explain the approach."
+  },
+  {
+    "id": "C9",
+    "type": "coding",
+    "prompt": "Write a Python function shortest_path(grid, start, end) where grid is a 2D list of 0s (passable) and 1s (walls), and start/end are (row, col) tuples. Return the number of steps in the shortest path from start to end, or -1 if no path exists. Use BFS and explain why BFS guarantees the shortest path."
+  },
+  {
+    "id": "C10",
+    "type": "coding",
+    "prompt": "Write a Python function calculate(expression) that evaluates a string arithmetic expression containing non-negative integers and the operators +, -, *, // (integer division). The expression may contain spaces. Respect standard operator precedence (* and // before + and -). For example: calculate('3 + 5 * 2') should return 13. Explain your approach."
   }
 ]
