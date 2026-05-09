@@ -1,0 +1,52 @@
+[
+  {
+    "id": "G1",
+    "type": "general",
+    "prompt": "Alice, Bob, and Carol each own exactly one pet: a cat, a dog, or a fish. Alice does not own the cat. Bob does not own the dog. Carol does not own the fish. Who owns which pet? Reason step by step."
+  },
+  {
+    "id": "G2",
+    "type": "general",
+    "prompt": "A bat and a ball together cost $1.10. The bat costs $1.00 more than the ball. How much does the ball cost? Show your reasoning carefully."
+  },
+  {
+    "id": "G3",
+    "type": "general",
+    "prompt": "In a room of 30 people, is it more likely than not that at least two share a birthday? Explain your reasoning step by step without necessarily computing the exact probability."
+  },
+  {
+    "id": "G4",
+    "type": "general",
+    "prompt": "If all Bloops are Razzies, and all Razzies are Lazzies, are all Bloops definitely Lazzies? What logical principle applies here? Explain step by step."
+  },
+  {
+    "id": "G5",
+    "type": "general",
+    "prompt": "A farmer has 17 sheep. All but 9 die. How many sheep are left? Explain your reasoning before giving the answer."
+  },
+  {
+    "id": "M1",
+    "type": "math",
+    "prompt": "A train travels at 60 km/h for 2 hours, then at 90 km/h for 1.5 hours. What is the total distance travelled? Show all working."
+  },
+  {
+    "id": "M2",
+    "type": "math",
+    "prompt": "Find the sum of all integers from 1 to 100. Show the formula you use and explain why it works."
+  },
+  {
+    "id": "M3",
+    "type": "math",
+    "prompt": "A store sells an item at a 20% discount. After the discount the price is $80. What was the original price? Show step-by-step working."
+  },
+  {
+    "id": "M4",
+    "type": "math",
+    "prompt": "Two pipes can fill a tank in 6 hours and 4 hours respectively. If both pipes are opened simultaneously, how long will it take to fill the tank? Show all reasoning."
+  },
+  {
+    "id": "M5",
+    "type": "math",
+    "prompt": "A sequence starts: 2, 6, 18, 54, ... What is the 8th term? Identify the pattern and show your working."
+  }
+]

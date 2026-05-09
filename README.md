@@ -7,7 +7,7 @@
 ## What this project does
 
 Fine-tunes `Qwen3-0.6B` on two different reasoning datasets using LoRA (5 trials each),
-evaluates against a baseline, then compares using `Mistral-7B` as an LLM judge.
+evaluates against a baseline, then compares using `Kimi-K2-Instruct` as an LLM judge.
 
 ---
 
@@ -40,15 +40,15 @@ Each notebook installs its own Python dependencies in the first cell — you do 
 
 ## Environment variables
 
-The notebooks call the HuggingFace Inference API to run the Mistral-7B judge. You need a free HF token with Inference API access.
+The notebooks call the Hugging Face OpenAI-compatible router to run the Kimi-K2 judge. You need an HF token with access to the configured inference provider.
 
-**Create `notebooks/.env`** (the notebooks load it automatically):
+**Create `.env` in this project folder** (the notebooks load it automatically):
 
 ```
-HF_TOKEN=hf_your_token_here
+HF_TOKEN=your_huggingface_token_here
 ```
 
-Get your token at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) — a read-only token is sufficient. Make sure `.env` is in the same `notebooks/` folder as the notebooks, not the project root.
+Get your token at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) — a read-only token is sufficient. Make sure `.env` is in the same folder as the notebooks.
 
 > `.env` is listed in `.gitignore` — do not commit it.
 
@@ -58,7 +58,7 @@ Get your token at [huggingface.co/settings/tokens](https://huggingface.co/settin
 
 ### `00_baseline.ipynb` — Baseline evaluation
 - Runs `Qwen3-0.6B` and `Qwen3-1.7B` locally on 10 reasoning prompts (no training)
-- Scores responses with Mistral-7B judge via HF Inference API
+- Scores responses with Kimi-K2 judge via the Hugging Face OpenAI-compatible router
 - **Output files (needed by notebooks 01–03):**
   - `baseline_results.csv`
   - `prompts.json`
@@ -122,7 +122,7 @@ If you run out of VRAM between trials, restart the notebook kernel before the ne
 
 - **`CUDA out of memory`** — restart kernel, run the failing cell again. The models are unloaded between trials.
 - **`unsloth install fails`** — the install cell tries the CUDA-specific wheel first, then falls back to generic unsloth. If both fail: `pip install unsloth` manually in terminal.
-- **HF Inference API `429 Too Many Requests`** (judge calls) — there is a `time.sleep(0.5)` between judge calls. If you still hit rate limits, increase it to `time.sleep(2)` in the `judge_response` calls.
+- **HF router/provider rate limits** (judge calls) — there is a short `time.sleep(...)` between judge calls. If you still hit rate limits, increase the delay in the `judge_response` calls.
 - **`FileNotFoundError: prompts.json`** — make sure your Jupyter working directory is `notebooks/`. Run `pwd` in a notebook cell to check; it should end in `.../notebooks`.
 - **Adapter not found in notebook 03** — notebooks 01 and 02 must complete fully before running 03. Check that `best_trial_datasetA.json` and `best_trial_datasetB.json` exist in the `notebooks/` folder.
 

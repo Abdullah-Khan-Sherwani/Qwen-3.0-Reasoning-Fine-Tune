@@ -1,6 +1,4 @@
 .env
-*.csv
-*.json
 adapters_datasetA/
 adapters_datasetB/
 __pycache__/
