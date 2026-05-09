@@ -14,7 +14,7 @@ evaluates against a baseline, then compares using `Kimi-K2-Instruct` as an LLM j
 ## Requirements
 
 ### Your machine needs:
-- CUDA GPU (tested on RTX 3090 Ti — 24 GB VRAM is plenty)
+- CUDA GPU (tested on RTX 3090 — 24 GB VRAM is plenty)
 - Python 3.10+
 - PyTorch with CUDA support
 
@@ -106,7 +106,7 @@ Get your token at [huggingface.co/settings/tokens](https://huggingface.co/settin
 
 ---
 
-## VRAM notes (RTX 3090 Ti — 24 GB)
+## VRAM notes (RTX 3090 — 24 GB)
 
 | Notebook | Peak VRAM usage |
 |----------|----------------|
@@ -139,9 +139,9 @@ print("GPU:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "n
 print("VRAM:", f"{torch.cuda.get_device_properties(0).total_memory/1e9:.1f} GB" if torch.cuda.is_available() else "n/a")
 ```
 
-Expected output on 3090 Ti:
+Expected output on 3090:
 ```
 CUDA available: True
-GPU: NVIDIA GeForce RTX 3090 Ti
+GPU: NVIDIA GeForce RTX 3090
 VRAM: 24.0 GB
 ```
