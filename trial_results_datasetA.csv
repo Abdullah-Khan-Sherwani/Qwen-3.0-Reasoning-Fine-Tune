@@ -1,0 +1,6 @@
+trial,purpose,data_pct,rank,lr,batch,epochs,val_loss,avg_judge_score,adapter_path
+T1,Data efficiency — 25%,25%,16,0.0002,2,1,1.3807,4.1,./adapters_datasetA\T1
+T2,Data efficiency — 50%,50%,16,0.0002,2,1,1.3521,3.7,./adapters_datasetA\T2
+T3,Data efficiency — 100%,100%,16,0.0002,2,1,1.2112,3.6,./adapters_datasetA\T3
+T4,"LoRA capacity — rank 32, wider modules",100%,32,0.0001,4,2,1.1449,2.5,./adapters_datasetA\T4
+T5,"LoRA capacity — rank 64, deeper",100%,64,5e-05,2,2,1.226,3.9,./adapters_datasetA\T5

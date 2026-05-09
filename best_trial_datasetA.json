@@ -1,0 +1,12 @@
+{
+  "trial": "T1",
+  "purpose": "Data efficiency \u2014 25%",
+  "data_pct": "25%",
+  "rank": 16,
+  "lr": 0.0002,
+  "batch": 2,
+  "epochs": 1,
+  "val_loss": 1.3807,
+  "avg_judge_score": 4.1,
+  "adapter_path": "./adapters_datasetA\\T1"
+}
